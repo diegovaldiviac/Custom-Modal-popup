@@ -1,25 +1,55 @@
-import logo from './logo.svg';
 import './App.css';
+import Modal from './component/modal';
+import modalStyles from './component/modalStyle';
+import React from 'react';
+import { withStyles } from '@material-ui/core';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      show: false
+    }
+    this.showModal = this.showModal.bind( this );
+  }
+
+  showModal(e) {
+    this.setState({ show: !this.state.show})
+  }
+
+
+  render() {
+
+    const { classes } = this.props;
+
+    return (
+      <div className='App'>
+        <h1>Custom Modal Prototype</h1>
+        <div className={classes.body}>
+          <Modal
+            onClose={this.showModal}
+            show={this.state.show}
+          >
+            Message Prop Passed on From Father Component
+          </Modal>
+          {!this.state.show ?
+            <button
+              className={classes.button}
+              onClick={e => {
+                this.showModal()
+              }}
+            >
+            show Modal
+          </button>
+        : null }
+
+        </div>
+      </div>
+    )
+  }
 }
 
-export default App;
+App = withStyles( modalStyles )(App);
+export default App
+
